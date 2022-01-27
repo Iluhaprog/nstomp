@@ -1,0 +1,26 @@
+{
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "rules": {
+    "quotes": ["error", "double"],
+    "func-style": ["error", "declaration"],
+    "max-params": ["error", 3],
+    "no-plusplus": "error",
+    "semi": "error",
+    "array-bracket-spacing": ["error", "always"],
+    "comma-style": ["error", "last"],
+    "indent": ["error", "tab"],
+    "no-magic-numbers": ["error", {
+      "ignoreArrayIndexes": true,
+      "ignoreDefaultValues": true,
+      "ignore": [1]
+    }],
+    "max-lines-per-function": ["error", { "max": 25 }]
+  }
+}
