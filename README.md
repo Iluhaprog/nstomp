@@ -23,8 +23,8 @@ npm install nstomp --global
 | -h, --help                          |  display help for command                          |
 
 ### Plans to add:
-[ ] sending files
-[ ] setting options via config file
+- sending files
+- setting options via config file
 
 ### Usage example:
 #### 1. Listening
@@ -62,6 +62,4 @@ nstomp -u ws://localhost:3001/stomp -d /msg -sm '{"reciept": 123456}' -dh '{"hea
 ###### Setup destination: **-d** */msg*
 ###### Message to send  ***[message can be any string]*** : **-sm** *'{"reciept": 123456}'*
 ###### Headers to send: **-dh** *'{"header1": 12, "header2": "text"}'*
-##
-##
-#### ! In all examples, of course, there should be your endpoints, addressees, headers and ! messages
+#### ! In all examples, of course, there should be your endpoints, addressees, headers and messages !
