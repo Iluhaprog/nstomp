@@ -1,6 +1,6 @@
 {
   "name": "nstomp",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "CLI for testing websocket with stomp protocol from terminal.",
   "main": "./bin/index.js",
   "scripts": {
