@@ -1,11 +1,15 @@
 {
   "name": "nstomp",
   "version": "0.0.1",
-  "description": "App for testing websockets with stomp protocol from terminal.",
+  "description": "CLI for testing websocket with stomp protocol from terminal.",
   "main": "./bin/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "run:dev": "node ./bin/index.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Iluhaprog/nstomp.git"
   },
   "keywords": [
     "STOMP",
@@ -15,7 +19,7 @@
     "1.2"
   ],
   "author": "Ilya Novak",
-  "license": "ISC",
+  "license": "MIT",
   "bin": {
     "nstomp": "./bin/index.mjs"
   },
@@ -29,5 +33,6 @@
   "devDependencies": {
     "eslint": "^8.7.0"
   },
-  "type": "module"
+  "type": "module",
+  "homepage": "https://github.com/Iluhaprog/nstomp.git"
 }
