@@ -57,7 +57,7 @@ nstomp -u ws://localhost:3001/stomp -d /msg '{"header1": 12, "header2": "text"}'
 
 1. Connect to: **-u** *ws://localhost:3001/stomp*
 2. Setup destination: **-d** */msg*
-3. Headers to send: **-dh** *'{"header1": 12, "header2": "text"}'*
-4. Message to send  ***[message can be any string]*** : **-sm** *'{"reciept": 123456}'*
+3. Headers to send: *'{"header1": 12, "header2": "text"}'*
+4. Message to send  ***[message can be any string]*** : **-m** *'{"reciept": 123456}'*
 
 #### In all examples, of course, there should be your endpoints, addressees, headers and messages
