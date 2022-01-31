@@ -1,11 +1,11 @@
 {
   "name": "nstomp",
-  "version": "0.0.3",
-  "description": "CLI for testing websocket with stomp protocol from terminal.",
+  "version": "1.0.0",
+  "description": "CLI for testing WebSocket with STOMP protocol from terminal.",
   "main": "./bin/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "run:dev": "node ./bin/index.mjs"
+    "start:dev": "node ./src/index.mjs"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
   "author": "Ilya Novak",
   "license": "MIT",
   "bin": {
-    "nstomp": "./bin/index.mjs"
+    "nstomp": "./src/index.mjs"
   },
   "dependencies": {
     "@stomp/stompjs": "^6.1.2",
