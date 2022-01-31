@@ -37,9 +37,10 @@ and start listening to the destination **/get**
 ```bash
 nstomp -u ws://localhost:3001/stomp '{"header1": 12, "header2": "value2"}' -d /get
 ```
-Connect to: **-u** *ws://localhost:3001/stomp*
-Setup connection headers: *'{"cheader": 12, "nheader": "header"}'*
-Setup destination: **-d** */get*
+
+1. Connect to: **-u** *ws://localhost:3001/stomp*
+2. Setup connection headers: *'{"cheader": 12, "nheader": "header"}'*
+3. Setup destination: **-d** */get*
 
 #### 2. Send message
 We need send message to destination **/msg** with headers:
@@ -53,8 +54,10 @@ Command example:
 ```bash
 nstomp -u ws://localhost:3001/stomp -d /msg '{"header1": 12, "header2": "text"}' -m '{"reciept": 123456}'
 ```
-Connect to: **-u** *ws://localhost:3001/stomp*
-Setup destination: **-d** */msg*
-Headers to send: **-dh** *'{"header1": 12, "header2": "text"}'*
-Message to send  ***[message can be any string]*** : **-sm** *'{"reciept": 123456}'*
+
+1. Connect to: **-u** *ws://localhost:3001/stomp*
+2. Setup destination: **-d** */msg*
+3. Headers to send: **-dh** *'{"header1": 12, "header2": "text"}'*
+4. Message to send  ***[message can be any string]*** : **-sm** *'{"reciept": 123456}'*
+
 #### In all examples, of course, there should be your endpoints, addressees, headers and messages
