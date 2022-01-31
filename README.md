@@ -12,14 +12,11 @@ npm install nstomp --global
 | Option                              | Description                                        |
 |-------------------------------------|----------------------------------------------------|
 | -V, --version                       |  output the version number                         |
-| -u, --url <url>                     |  url where need connect.                           |
-| -d, --destination <destination>     | destination for  subscription or message sending.  |
-| -sm, --send-message <message>       | message for sending                                |
-| -l, --listen                        |   listen by destination.                           |
-| -ch, --connection-headers <headers> |   headers for connection.                          |
-| -dh, --destination-headers <headers>|  headers for destination.                          |
+| -u, --url <url...>                  |  url where need connect, headers by needed                           |
+| -d, --destination <destination...>  |  destination for subscription or message sending, headers by needed  |
+| -m, --message  <message>             |  message to send                               |
 | -sj, --sock-js                      |  enable connection with SockJS.                    |
-| --logs                              |  show logs of libraries used in nstomp.            |
+| -l, --logs                          |  show logs of libraries used in nstomp.            |
 | -h, --help                          |  display help for command                          |
 
 ### Plans to add:
@@ -38,14 +35,12 @@ we need to connect to **ws://localhost:3001/stomp**, which requires the **header
 and start listening to the destination **/get**
 
 ```bash
-nstomp -u ws://localhost:3001/stomp -d /get -l -ch '{"cheader": 12, "nheader": "header"}'
+nstomp -u ws://localhost:3001/stomp '{"header1": 12, "header2": "value2"}' -d /get
 ```
-###### Connect to: **-u** *ws://localhost:3001/stomp*
-###### Setup destination: **-d** */get*
-###### Enable listening: **-l**
-###### Setup connection headers: **-ch** *'{"cheader": 12, "nheader": "header"}'*
-###
-###
+Connect to: **-u** *ws://localhost:3001/stomp*
+Setup connection headers: *'{"cheader": 12, "nheader": "header"}'*
+Setup destination: **-d** */get*
+
 #### 2. Send message
 We need send message to destination **/msg** with headers:
 ```json
@@ -56,10 +51,10 @@ We need send message to destination **/msg** with headers:
 ```
 Command example:
 ```bash
-nstomp -u ws://localhost:3001/stomp -d /msg -sm '{"reciept": 123456}' -dh '{"header1": 12, "header2": "text"}'
+nstomp -u ws://localhost:3001/stomp -d /msg '{"header1": 12, "header2": "text"}' -m '{"reciept": 123456}'
 ```
-###### Connect to: **-u** *ws://localhost:3001/stomp*
-###### Setup destination: **-d** */msg*
-###### Message to send  ***[message can be any string]*** : **-sm** *'{"reciept": 123456}'*
-###### Headers to send: **-dh** *'{"header1": 12, "header2": "text"}'*
-#### ! In all examples, of course, there should be your endpoints, addressees, headers and messages !
+Connect to: **-u** *ws://localhost:3001/stomp*
+Setup destination: **-d** */msg*
+Headers to send: **-dh** *'{"header1": 12, "header2": "text"}'*
+Message to send  ***[message can be any string]*** : **-sm** *'{"reciept": 123456}'*
+#### In all examples, of course, there should be your endpoints, addressees, headers and messages

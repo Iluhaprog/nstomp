@@ -16,7 +16,15 @@
     "WebSocket",
     "connection",
     "stomp",
-    "1.2"
+    "stomp 1.2",
+    "stomp 1.1",
+    "stomp 1.0",
+    "CLI",
+    "client",
+    "stomp-client",
+    "terminal-client",
+    "test",
+    "testing"
   ],
   "author": "Ilya Novak",
   "license": "MIT",
