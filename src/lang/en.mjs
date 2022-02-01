@@ -14,10 +14,12 @@ const description = {
         "\n❱  nstomp -u ... -d ... -m 'hello world!'",
 	logs: "show logs of libraries used in nstomp",
 	sockJs: "enable connection with SockJS",
+	config: "path to config file with options",
 };
 
 const defaultMessages = {
 	stompErrorMessage: "Possibly invalid url.",
+	missedURL: "You may have missed url.",
 };
 
 const labels = {

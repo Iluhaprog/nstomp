@@ -8,6 +8,7 @@ import {
 	showMessage,
 } from "./out.mjs";
 import { getLabels, getMessages } from "../lang/lang.mjs";
+import { optionsIsValid } from "./validation.mjs";
 
 const { w3cwebsocket } = w3cw;
 global.WebSocket = w3cwebsocket;
@@ -16,30 +17,25 @@ const { Stomp } = stomp;
 const messages = getMessages();
 const labels = getLabels();
 
-export function setup({
-	url,
-	connectionHeaders,
-	destination,
-	destinationHeaders,
-	message,
-	withSockJS,
-	logs,
-}) {
-	const connection = createConnection({
-		url,
-		headers: connectionHeaders,
-		withSockJS,
-		logs,
-	});
-
-	connection.onConnect = () => onConnect({
-		connection,
+export function setup(options) {
+	const {
 		destination,
 		destinationHeaders,
-		message
-	});
+		message,
+	} = options;
 
-	connection.activate();
+	if (optionsIsValid(options)) {
+		const connection = createConnection(options);
+
+		connection.onConnect = () => onConnect({
+			connection,
+			destination,
+			destinationHeaders,
+			message
+		});
+
+		connection.activate();
+	}
 }
 
 export function createConnection({ url, headers, withSockJS, logs }) {
