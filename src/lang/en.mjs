@@ -15,11 +15,13 @@ const description = {
 	logs: "show logs of libraries used in nstomp",
 	sockJs: "enable connection with SockJS",
 	config: "path to config file with options",
+	files: "list of files to send",
 };
 
 const defaultMessages = {
 	stompErrorMessage: "Possibly invalid url.",
 	missedURL: "You may have missed url.",
+	uploaded: "Uploaded!",
 };
 
 const labels = {
@@ -28,7 +30,7 @@ const labels = {
 	WEBSOCKET_ERROR: "WEBSOCKET ERROR",
 	DISCONNECT_HEADERS: "DISCONNECT HEADERS",
 	DISCONNECT_BODY: "DISCONNECT BODY",
-	MESSAGE_HEADERS: "MESSAGE HEADERS",
+	DESTINATION_HEADERS: "DESTINATION HEADERS",
 	HEADERS: "HEADERS",
 	MESSAGE: "MESSAGE",
 	ERROR: "ERROR",

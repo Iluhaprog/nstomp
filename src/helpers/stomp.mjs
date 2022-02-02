@@ -1,3 +1,4 @@
+import fs from "fs";
 import w3cw from "websocket";
 import stomp from "@stomp/stompjs";
 import SockJS from "sockjs-client";
@@ -6,6 +7,7 @@ import {
 	showError,
 	showWarn,
 	showMessage,
+	showFile,
 } from "./out.mjs";
 import { getLabels, getMessages } from "../lang/lang.mjs";
 import { optionsIsValid } from "./validation.mjs";
@@ -22,6 +24,7 @@ export function setup(options) {
 		destination,
 		destinationHeaders,
 		message,
+		files,
 	} = options;
 
 	if (optionsIsValid(options)) {
@@ -31,7 +34,8 @@ export function setup(options) {
 			connection,
 			destination,
 			destinationHeaders,
-			message
+			message,
+			files,
 		});
 
 		connection.activate();
@@ -78,21 +82,88 @@ function onConnect({
 	connection,
 	destination,
 	destinationHeaders,
-	message
+	message,
+	files,
 }) {
 	if (message) {
-		showFrame({
-			body: message,
-			headers: destinationHeaders,
-		});
-		connection.send(destination, destinationHeaders, message);
-		connection.deactivate();
-	} else {
+		sendMessage({ connection, message, destinationHeaders, destination });
+	} 
+	if (files) {
+		sendFiles({ connection, destinationHeaders, destination, files });
+	}
+	if (!message && !files) {
 		connection.subscribe(destination, showFrame, destinationHeaders);
 	}
 }
 
+function sendMessage({
+	message,
+	destinationHeaders,
+	connection,
+	destination,
+}) {
+	showFrame({
+		body: message,
+		headers: destinationHeaders,
+	});
+	connection.publish({
+		destination, 
+		headers: destinationHeaders, 
+		body: message,
+	});
+	connection.deactivate();
+}
+
+function sendFiles({ destinationHeaders, connection, destination, files }) {
+	let filesCounter = files.length;
+	const NO_FILES = 0;
+
+	showHeaders(destinationHeaders, labels.DESTINATION_HEADERS);
+
+	files.forEach((file) => {
+		sendBinaryData({
+			file,
+			connection,
+			destination,
+			destinationHeaders,
+			onLoad: (file) => {
+				filesCounter -= 1;
+				if (filesCounter <= NO_FILES) {
+					connection.deactivate();
+				}
+				showFile(` ${messages.uploaded} `, `File: ${file}`);
+			}
+		});
+	});
+}
+
+function sendBinaryData({
+	file,
+	connection,
+	destination,
+	destinationHeaders,
+	onLoad,
+}) {
+	fs.readFile(file, "utf-8", (err, data) => {
+		if (err) {
+			showError(err);
+		} else {
+			const body = new TextEncoder().encode(data);
+			
+			const headers = Object.assign({ "content-type": "application/octet-stream" }, destinationHeaders);
+
+			connection.publish({
+				destination,
+				headers,
+				binaryBody: body,
+			});
+
+			onLoad(file);
+		}
+	});
+}
+
 function showFrame(frame) {
+	showHeaders(frame.headers, labels.DESTINATION_HEADERS);
 	showMessage(frame.body);
-	showHeaders(frame.headers, labels.MESSAGE_HEADERS);
 }

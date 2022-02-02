@@ -11,22 +11,26 @@ export function prepareOptions(options) {
 		destinationHeaders: null,
 		message: options.message || null,
 		withSockJS: options.withSockJS || false,
+		files: options.files || null,
 		logs: options.logs || false,
 	};
 
-	if (options.url && options.url.length === MAX_OPTION_LENGTH) {
-		resultOptions.connectionHeaders = JSON.parse(options.url[1]);
-	}
+	resultOptions.connectionHeaders = getOptionHeaders(options.url);
 
 	if (options.destination) {
 		resultOptions.destination = options.destination[0];
-
-		if (options.destination.length === MAX_OPTION_LENGTH) {
-			resultOptions.destinationHeaders = JSON.parse(options.destination[1]);
-		}
+		resultOptions.destinationHeaders = getOptionHeaders(options.destination);
 	}
 
 	return resultOptions;
+}
+
+function getOptionHeaders(option) {
+	let headers = null;
+	if (option && option.length === MAX_OPTION_LENGTH) {
+		headers = JSON.parse(option[1]);
+	}
+	return headers;
 }
 
 export function prepareConfigFile({ path, encoding = "utf8", setup }) {
@@ -35,14 +39,13 @@ export function prepareConfigFile({ path, encoding = "utf8", setup }) {
 			showError(err, "READING ERROR");
 		} else {
 			const options = JSON.parse(data);
-			const connectionHeaders = options.connectionHeaders || null;
-			const destinationHeaders = options.destinationHeaders || null;
 			const resultOptions = {
 				url: options.url,
-				connectionHeaders: connectionHeaders,
+				connectionHeaders: options.connectionHeaders || null,
 				destination: options.destination,
-				destinationHeaders: destinationHeaders,
+				destinationHeaders: options.destinationHeaders || null,
 				message: prepareMessage(options.message),
+				files: options.files || null,
 				withSockJS: options.withSockJS || false,
 				logs: options.logs || false,
 			};

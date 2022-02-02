@@ -12,10 +12,11 @@ npm install nstomp --global
 | Option                              | Description                                        |
 |-------------------------------------|----------------------------------------------------|
 | -v, --version                       |  output the version number                         |
-| -u, --url <url...>                  |  url where need connect, headers by needed                           |
-| -d, --destination <destination...>  |  destination for subscription or message sending, headers by needed  |
-| -m, --message  <message>             |  message to send                               |
-| -c, --config <path>                 |  path to config file with options |
+| -u, --url                  |  url where need connect, headers by needed                           |
+| -d, --destination  |  destination for subscription or message sending, headers by needed  |
+| -m, --message             |  message to send                               |
+| -c, --config                 |  path to config file with options |
+| -f, --files             | path's to files which need send |
 | -sj, --sock-js                      |  enable connection with SockJS.                    |
 | -l, --logs                          |  show logs of libraries used in nstomp.            |
 | -h, --help                          |  display help for command                          |
@@ -29,14 +30,13 @@ npm install nstomp --global
 | destination        |  destination for subscription or message sending | ❎    | string |
 | destinationHeaders |  headers for destination                         | ❎    | object |
 | message            |  message to send                                 | ❎    | string *or* number *or* object |
+| files              |  path's to files which need send                 | ❎    | string[] |
 | withSockJS         |  enable connection with SockJS.                  | ❎    | boolean |
 | logs               |  show logs of libraries used in nstomp.          | ❎    | boolean |
 
-### Plans to add:
-- sending files
 # Usage example:
 ## 1. Listening
-we need to connect to **ws://localhost:3001/stomp**, which requires the **headers**:
+we need to connect to **http://localhost:3001/stomp**, which requires the **headers**:
 ```json
 {
   "header1": 12,
@@ -96,6 +96,31 @@ nstomp -u http://localhost:3001/stomp -d /msg '{"header1": 12, "header2": "value
       "message": "hello world", 
       "exp": 123445
     }
+}
+```
+
+## 3. Send file
+We need send flies to destination **/files** :
+
+files: 
+  1. image1.png
+  2. image2.jpeg
+  3. data.json
+
+```bash
+nstomp -u http://localhost:3001/stomp -d /files -f image1.png image2.jpeg data.json
+```
+
+1. Connect to: **-u** *http://localhost:3001/stomp*
+2. Setup destination: **-d** */get*
+3. Setup list of files to send: image1.png image2.jpeg data.json
+
+### Config file example:
+```json
+{
+    "url": "http://localhost:3001/stomp",
+    "destination": "/files",
+    "files": ["image1.png", "image2.jpeg", "data.json"]
 }
 ```
 #### In all examples, of course, there should be your endpoints, addressees, headers and messages
