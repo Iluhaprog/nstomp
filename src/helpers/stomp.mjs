@@ -41,11 +41,11 @@ export function setup(options) {
 	}
 }
 
-export function createConnection({ url, headers, withSockJS, logs }) {
+export function createConnection({ url, connectionHeaders, withSockJS, logs }) {
 	const client = Stomp.over(() => withSockJS ? new SockJS(url) : new w3cwebsocket(url));
-	if (headers) {
-		showHeaders(headers, labels.CONNECTION_HEADERS);
-		client.connectHeaders = headers;
+	if (connectionHeaders) {
+		showHeaders(connectionHeaders, labels.CONNECTION_HEADERS);
+		client.connectHeaders = connectionHeaders;
 	}
 
 	if (!logs) client.debug = () => {};

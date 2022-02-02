@@ -5,7 +5,7 @@ const program = new Command();
 
 const description = getDescription();
 
-program.version("1.1.0", "-v, --version", "output the current version");
+program.version("1.1.1", "-v, --version", "output the current version");
 program.description(description.main);
 program
 	.option("-u, --url <url...>", description.url)
