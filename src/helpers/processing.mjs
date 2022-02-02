@@ -22,8 +22,6 @@ export function prepareOptions(options) {
 		resultOptions.destinationHeaders = getOptionHeaders(options.destination);
 	}
 
-	console.log(resultOptions);
-
 	return resultOptions;
 }
 

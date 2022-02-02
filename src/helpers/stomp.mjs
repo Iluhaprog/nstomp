@@ -7,6 +7,7 @@ import {
 	showError,
 	showWarn,
 	showMessage,
+	showFile,
 } from "./out.mjs";
 import { getLabels, getMessages } from "../lang/lang.mjs";
 import { optionsIsValid } from "./validation.mjs";
@@ -113,40 +114,56 @@ function sendMessage({
 	connection.deactivate();
 }
 
-function sendFiles({
-	destinationHeaders,
+function sendFiles({ destinationHeaders, connection, destination, files }) {
+	let filesCounter = files.length;
+	const NO_FILES = 0;
+
+	showHeaders(destinationHeaders, labels.DESTINATION_HEADERS);
+
+	files.forEach((file) => {
+		sendBinaryData({
+			file,
+			connection,
+			destination,
+			destinationHeaders,
+			onLoad: (file) => {
+				filesCounter -= 1;
+				if (filesCounter <= NO_FILES) {
+					connection.deactivate();
+				}
+				showFile(` ${messages.uploaded} `, `File: ${file}`);
+			}
+		});
+	});
+}
+
+function sendBinaryData({
+	file,
 	connection,
 	destination,
-	files,
+	destinationHeaders,
+	onLoad,
 }) {
-	files.forEach((file) => {
-		sendBinaryData(file, (data) => {
+	fs.readFile(file, "utf-8", (err, data) => {
+		if (err) {
+			showError(err);
+		} else {
 			const body = new TextEncoder().encode(data);
 			
-			const headers = Object.assign({ 
-				"content-type": "application/octet-stream"
-			}, destinationHeaders);
+			const headers = Object.assign({ "content-type": "application/octet-stream" }, destinationHeaders);
 
 			connection.publish({
 				destination,
 				headers,
 				binaryBody: body,
 			});
-		});
-	});
-}
 
-function sendBinaryData(file, onSuccess) {
-	fs.readFile(file, "utf-8", (err, data) => {
-		if (err) {
-			showError(err);
-		} else {
-			onSuccess(data);
+			onLoad(file);
 		}
 	});
 }
 
 function showFrame(frame) {
+	showHeaders(frame.headers, labels.DESTINATION_HEADERS);
 	showMessage(frame.body);
-	showHeaders(frame.headers, labels.MESSAGE_HEADERS);
 }
