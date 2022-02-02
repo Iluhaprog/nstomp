@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import { run } from "./cli.mjs";
+import { main } from "./main.mjs";
 
-run(process.argv);
+main(process.argv);

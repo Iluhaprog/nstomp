@@ -15,6 +15,7 @@ const description = {
 	logs: "show logs of libraries used in nstomp",
 	sockJs: "enable connection with SockJS",
 	config: "path to config file with options",
+	files: "list of files to send",
 };
 
 const defaultMessages = {

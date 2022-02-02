@@ -1,3 +1,4 @@
+import fs from "fs";
 import w3cw from "websocket";
 import stomp from "@stomp/stompjs";
 import SockJS from "sockjs-client";
@@ -22,6 +23,7 @@ export function setup(options) {
 		destination,
 		destinationHeaders,
 		message,
+		files,
 	} = options;
 
 	if (optionsIsValid(options)) {
@@ -31,7 +33,8 @@ export function setup(options) {
 			connection,
 			destination,
 			destinationHeaders,
-			message
+			message,
+			files,
 		});
 
 		connection.activate();
@@ -78,18 +81,69 @@ function onConnect({
 	connection,
 	destination,
 	destinationHeaders,
-	message
+	message,
+	files,
 }) {
 	if (message) {
-		showFrame({
-			body: message,
-			headers: destinationHeaders,
-		});
-		connection.send(destination, destinationHeaders, message);
-		connection.deactivate();
-	} else {
+		sendMessage({ connection, message, destinationHeaders, destination });
+	} 
+	if (files) {
+		sendFiles({ connection, destinationHeaders, destination, files });
+	}
+	if (!message && !files) {
 		connection.subscribe(destination, showFrame, destinationHeaders);
 	}
+}
+
+function sendMessage({
+	message,
+	destinationHeaders,
+	connection,
+	destination,
+}) {
+	showFrame({
+		body: message,
+		headers: destinationHeaders,
+	});
+	connection.publish({
+		destination, 
+		headers: destinationHeaders, 
+		body: message,
+	});
+	connection.deactivate();
+}
+
+function sendFiles({
+	destinationHeaders,
+	connection,
+	destination,
+	files,
+}) {
+	files.forEach((file) => {
+		sendBinaryData(file, (data) => {
+			const body = new TextEncoder().encode(data);
+			
+			const headers = Object.assign({ 
+				"content-type": "application/octet-stream"
+			}, destinationHeaders);
+
+			connection.publish({
+				destination,
+				headers,
+				binaryBody: body,
+			});
+		});
+	});
+}
+
+function sendBinaryData(file, onSuccess) {
+	fs.readFile(file, "utf-8", (err, data) => {
+		if (err) {
+			showError(err);
+		} else {
+			onSuccess(data);
+		}
+	});
 }
 
 function showFrame(frame) {
